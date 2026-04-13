@@ -1,10 +1,9 @@
 package com.example.viedeogame.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -23,6 +22,9 @@ public class Companie {
     private long id;
     @NotBlank
     private String name;
+    private String country;
 
+    @OneToMany(mappedBy="companie")
 
+    private Set<Console> consoles = new HashSet<>();
 }
