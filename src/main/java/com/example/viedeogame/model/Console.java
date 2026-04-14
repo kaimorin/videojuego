@@ -1,17 +1,12 @@
 package com.example.viedeogame.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.ManyToAny;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
 
 @Entity
 @Table (name="consoles")
@@ -23,12 +18,32 @@ import org.hibernate.annotations.ManyToAny;
 public class Console {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY )
-    private long id;
+    private Long id;
     @NotBlank
     private String name;
 
     private Integer releaseyear;
-    @ManyToAny
+
+    @ManyToOne
     @JoinColumn(name="Companie_id",nullable = false)
     private Companie companie;
+
+    @Builder.Default
+    @ManyToMany(mappedBy = "consoles")
+    private Set<Videogame> videogames = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+
+        if(!(o instanceof Console)) return false;
+
+        Console other =(Console) o;
+        return id!=null && id.equals(other.getId());
+
+    }
+    @Override
+    public int hashCode(){
+        return 31;
+    }
 }
